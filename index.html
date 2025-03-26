@@ -165,7 +165,7 @@
     </div>
 
     <script>
-        // Köpek cinsleri hakkında genel bilgi
+        
         const breedInfo = {
             "affenpinscher": "This breed basically has an expression resembling a monkey, and since Affen means monkey in German, their German name is an indication of this. With a charming and cheeky personality, as well as a courageous nature with quick thinking ability and intelligence, the Affenpinscher is a great family friend.",
             "african": "The Africanis is a medium-sized, powerfully built and tall dog with short hair. The dogs can be of any colour. There is also a variety of these dogs with long wiry hair, but it is relatively rare. Their height from the ground usually varies between 50 and 60 cm.",
@@ -289,7 +289,7 @@
         }
 
         async function getDogImage() {
-            let breedName = document.getElementById("breeds").value; // Seçilen cins
+            let breedName = document.getElementById("breeds").value;
             if (breedName === "") {
                 document.getElementById("breedInfo").innerHTML = "If you want to change your photo, choose a dog breed first!";
                 return; // Seçim yapılmadıysa fotoğraf gösterme
