@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Info Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background-color: #11526D;
+            padding: 30px 30px;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            width: 90%;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        #photoBox {
+            flex: 1;
+            text-align: center;
+        }
+
+        #photoBox img {
+            width: 300px;
+            height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #descriptionBox {
+            height: 300px;
+            flex: 2;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #breedBox {
+            height: 300px;
+            flex: 1;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #briefBox {
+            height: 300px;
+            flex: 1;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #briefBox p {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #1E90FF;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        #line {
+            width: 100%;
+            border: none;
+            border-top: 0.4rem solid #11526D;
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: visible;
+            height: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>DOG INFO WEBSITE</h1>
+    </div>
+
+    <div class="container">
+        <div id="photoBox">
+            <div id="output">
+                <img src="dog-info.jpg" alt="" width="300px" height="300px">
+            </div>
+            <button onclick="getDogImage()">Change Photo</button>
+        </div>
+
+        <div id="descriptionBox">
+            <h2>Breed Information</h2>
+            <hr id="line">
+            <div id="breedInfo"><b>Select a breed to see details</b></div>
+        </div>
+
+        <div id="breedBox">
+            <h2>Breeds</h2>
+            <hr id="line">
+            <select id="breeds" onchange="getDogImage()">
+                <option value="">Choose a dog breed</option>
+            </select>
+        </div>
+
+        <div id="briefBox">
+            <h2>Brief information</h2>
+            <hr id="line">
+            <p>A dog breed is a particular type of dog that was purposefully bred by humans to perform specific tasks,
+                such as herding, hunting, and guarding. Dogs are the most variable mammal on Earth, with artificial
+                selection producing upward of 360 globally recognized breeds.</p>
+
+        </div>
+    </div>
+
+    <script>
+        // Köpek cinsleri hakkında genel bilgi
+        const breedInfo = {
+            "affenpinscher": "This breed basically has an expression resembling a monkey, and since Affen means monkey in German, their German name is an indication of this. With a charming and cheeky personality, as well as a courageous nature with quick thinking ability and intelligence, the Affenpinscher is a great family friend.",
+            "african": "The Africanis is a medium-sized, powerfully built and tall dog with short hair. The dogs can be of any colour. There is also a variety of these dogs with long wiry hair, but it is relatively rare. Their height from the ground usually varies between 50 and 60 cm.",
+            "airedale": "The Airedale Terrier is an English terrier dog breed. As the largest of the terriers, the Airedale Terrier has a muscular and compact body, a short, erect tail, and short fur. Its height at the shoulder is 57–59 cm, and its weight is 17–22 kg. It is an excellent swimmer and a fast runner.",
+            "akita": "The Akita is a large and powerful dog breed with a noble and intimidating presence. They were originally used for guarding royalty and nobility in feudal Japan. The Akita also tracked and hunted wild boar, black bear, and sometimes deer. Akitas are known to be clean dogs and are usually very quiet.",
+            "appenzeller" : "The Appenzeller Sennenhund is a medium-sized dog breed that is one of the four regional breeds of Sennenhund-type dogs from the Swiss Alps. The name Sennenhund refers to people called Senn, herders in the Appenzell region of Switzerland.",
+            "australian" : "The Australian Shepherd is a breed of herding dog that was developed on ranches in the Western United States. Despite its name, the breed was not developed in Australia, but rather in the United States where they were seen in the West as early as the 1800s.",
+            "bakharwal" : "The Bakharwal Dog is a breed of dog that originated in the Pir Panjal mountain range of the Kashmir Himalayas. The Bakharwal Dog is used by the Bakarwal and Gujjar tribes of Jammu and Kashmir for guarding their livestock.",
+            "basenji" : "The Basenji is a breed of hunting dog. It was bred from stock that originated in central Africa. Most of the major kennel clubs in the English-speaking world place the breed in the hound group, specifically in the sighthound type.",
+            "beagle" : "The Beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.",
+            "bluetick" : "The Bluetick Coonhound is a breed of coonhound originating in the United States. The Bluetick Coonhound is known for its friendly persona, cold nose, and deep bawl mouth.",
+            "borzoi" : "The Borzoi, also called the Russian Wolfhound, is a breed of domestic dog. Descended from dogs brought to Russia from central Asian countries, it is similar in shape to a greyhound, and is also a member of the sighthound family.",
+            "bouvier" : "The Bouvier des Flandres is a herding dog breed originating in Flanders. They were originally used for general farm work including cattle droving, sheep herding, and cart pulling, and nowadays as guard dogs and police dogs, as well as being kept as pets.",
+            "boxer" : "The Boxer is a medium to large, short-haired breed of dog, developed in Germany. The coat is smooth and tight-fitting; colors are fawn, brindled, or white, with or without white markings.",
+            "brabancon" : "The Brussels Griffon is a breed of toy dog, named for their city of origin: Brussels, Belgium. The Griffon Bruxellois may refer to three different breeds, the Griffon Bruxellois, the Griffon Belge and the Petit Brabançon.",
+            "briard" : "The Briard is an ancient breed of large herding dog, originally from France. A Briard-type dog appears in Gaston Febus' Livre de chasse ('Book of the Hunt'), written in the 14th century.",
+            "buhund" : "The Norwegian Buhund is a breed of dog of the spitz type. It is closely related to the Icelandic Sheepdog and the Jämthund. The Buhund is used as an all-purpose farm and herding dog, as well as watch dog.",
+            "bulldog": "A dog breed that was originally bred centuries ago in England for bull and bear fights. The name Bulldog comes from the combination of the English words bull and dog. When blood sports were banned in England in 1835, it was thought that the bulldog had lost its purpose. However, bulldog breeders decided to preserve the breed and transformed this aggressive dog into a calm and quiet companion dog. This breed was officially recognized by the American Kennel Club in 1890.",
+            "bullterier" : "The Bull Terrier is a breed of dog in the terrier family. There is also a miniature version of this breed which is officially known as the Miniature Bull Terrier.",
+            "cattledog" : "The Australian Cattle Dog (ACD), or simply Cattle Dog, is a breed of herding dog originally developed in Australia for droving cattle over long distances across rough terrain. This breed is a medium-sized, short-coated dog that occurs in two main colour forms.",
+            "cavapoo" : "The Cavapoo is a crossbreed dog. The Cavapoo is a cross between a Cavalier King Charles Spaniel and a Miniature Poodle. The Cavapoo was designed in Australia in the late 1990s and was bred to be a small dog that is outgoing, doesn't shed, and is easy to train.",
+            "chihuahua" : "The Chihuahua is the smallest breed of dog, and is named after the Mexican state of Chihuahua. Chihuahuas come in a wide variety of colors, and two coat lengths.",
+            "chippiparai" : "Chippiparai is a sighthound breed native to the Tamil Nadu state in southern India. It has the typical aerodynamic features of a sighthound, with long legs and a slim, agile body designed for speed. The breed's color is usually white, but other colors can also be found.",
+            "chow" : "The Chow Chow is a dog breed originally from northern China. The Chow Chow is a sturdily built dog, square in profile, with a broad skull and small, triangular, erect ears with rounded tips.",
+            "clumber" : "The Clumber Spaniel is a spaniel-type dog breed developed in the United Kingdom. It is the largest of the spaniels and is predominantly white with lemon or orange markings. The breed is named after Clumber Park in Nottinghamshire, where it was first developed.",
+            "cockapoo" : "The Cockapoo is a mixed breed dog — a cross between the Cocker Spaniel and Poodle dog breeds. In most cases, they are the result of crossbreeding an American Cocker Spaniel and a Miniature Poodle.",
+            "collie" : "The Collie is a distinctive type of herding dog, including many related landraces and formal breeds. The breed originated in Scotland and Northern England.", 
+            "coonhound": "The Coonhound is a type of scent hound and a member of the hound group. They are descended from bloodhounds, foxhounds, and other scent hounds.",
+            "corgi": "The Corgi is a small herding dog breed that originated in Wales. There are two distinct breeds of Corgis: the Pembroke Welsh Corgi and the Cardigan Welsh Corgi. They are known for their short legs and long bodies.",
+            "cotondetulear" : "The Coton de Tuléar is a breed of small dog named for the city of Tuléar in Madagascar and for its cotton-like coat. The breed is believed to have originated on the island of Madagascar.",
+            "dachshund" : "The Dachshund is a breed of dog that originated in Germany. The breed is a hound type that has been used for hunting both above and below ground. The word 'dachshund' is of German origin and literally means 'badger dog', from Dachs ('badger') and Hund ('hound').",
+            "dalmatian" : "The Dalmatian is a breed of medium-sized dog, noted for its unique black, liver, spotted coat and mainly used as a carriage dog in its early days. Its roots trace back to Dalmatia, a region of Croatia.",
+            "dane" : "The Great Dane is a German breed of domestic dog known for its large size. The German name of the breed is Deutsche Dogge, or German Mastiff. The French name is Dogue Allemand.",
+            "danish": "The Danish-Swedish Farmdog is a breed of dog that has its origin in Denmark and southern Sweden, but has become popular all over Scandinavia. The breed is mainly white with black spots and was originally used as a farmdog, but is now also kept as a pet.",
+            "deerhound": "The Scottish Deerhound, or simply the Deerhound, is a breed of hound (a sighthound), once bred to hunt the red deer by coursing. The Scottish Deerhound is gentle and extremely friendly. They are known for their calm nature and friendly disposition.",
+            "dhole" : "The dhole is a canid native to Central, South, East Asia, and Southeast Asia. Other English names for the species include Asian wild dog, Asiatic wild dog, Indian wild dog, whistling dog, red dog, and mountain wolf.",
+            "dingo" : "The dingo is a type of feral dog native to Australia. The dingo is a commensal animal that associates with humans but has not been selectively bred as have other domesticated animals. The name dingo comes from the Dharug language used by the Indigenous Australians of the Sydney area.",
+            "doberman" : "The Dobermann, or Doberman Pinscher in the United States and Canada, is a medium-large breed of domestic dog that was originally developed around 1890 by Karl Friedrich Louis Dobermann, a tax collector from Germany.",
+            "elkhound" : "The Norwegian Elkhound is one of the ancient Northern Spitz-type breed of dog and is the National Dog of Norway. The Elkhound has served as a hunter, guardian, herder, and defender.",
+            "entlebucher" : "The Entlebucher Mountain Dog is a breed of dog, one of four regional breeds of Sennenhund-type dogs from the Swiss Alps. The name Sennenhund refers to people called Senn, herders in the Swiss Alps.",
+            "eskimo" : "The American Eskimo Dog is a breed of companion dog originating in Germany. The American Eskimo is a member of the Spitz family. Despite its name and appearance, the American Eskimo dog is not from Alaska.",
+            "finnish" : "The Finnish Lapphund is a hardy, easy going, medium-size breed of Spitz type. Traditionally this dog has been engaged to help herd reindeer.",
+            "frise" : "The Bichon Frise is a small breed of dog of the bichon type. The Bichon Frise is a member of the Non-Sporting Group of dog breeds in the United States, and a member of the Toy Dog Group in the United Kingdom.",
+            "gaddi" : "The Gaddi Kutta is a mastiff-type mountain dog found in northern India, especially states in the western Himalayas region and in Himachal Pradesh and Uttarakhand.",
+            "germanshepherd" : "The German Shepherd is a breed of medium to large-sized working dog that originated in Germany. The breed's officially recognized name is German Shepherd Dog in the English language.",
+            "greyhound" : "The Greyhound is a breed of dog, a sighthound which has been bred for coursing game and Greyhound racing. Since the rise in large-scale adoption of retired racing Greyhounds, the breed has seen a resurgence in popularity as a family pet.",
+            "groenendael" : "The Belgian Shepherd is a breed of dog, sometimes classified as a variety of the Belgian Shepherd Dog rather than as a separate breed. The Groenendael is recognized by all major kennel clubs.",
+            "havanese" : "The Havanese is a breed of Bichon type, originating in Cuba. The Havanese is small in size and sturdy in structure with a tail carried over its back and a silky coat that comes in a variety of colors.",
+            "hound" : "The Hound Group is a group of dog breeds in the United Kennel Club, the Canadian Kennel Club, and the American Kennel Club.",
+            "husky" : "The Siberian Husky is a medium-sized working dog breed. The breed belongs to the Spitz genetic family. It is recognizable by its thickly furred double coat, erect triangular ears, and distinctive markings.",
+            "keeshond" : "The Wolfsspitz, also known as the Keeshond, is a dog breed that originated in the Netherlands in the 1700s. Its average lifespan is 13 years. Males typically stand between 43 cm and 48 cm tall, while females range from 41 cm to 46 cm. Males weigh between 20 kg and 21 kg, whereas females weigh between 15 kg and 16 kg. They are very friendly and can also be used as guard dogs.",
+            "kelpie" :"The Kelpie is a herding dog breed originating from Australia. It is a medium-sized dog and comes in various colors. Kelpies are commonly exported worldwide for herding sheep, cattle, and goats.",
+            "kombai" : "The Kombai is a breed of guard dog or watchdog from Tamil Nadu, India. The breed is used primarily for hunting and for guarding homes and farms.",
+            "komondor" : "The Komondor, also known as the Hungarian sheepdog, is a large, white-coloured Hungarian breed of livestock guardian dog with a long, corded coat.",
+            "kuvasz" : "The Kuvasz is a livestock guardian dog breed that originates from Hungary. The Kuvasz is a large dog with a dense double coat that can be either wavy or straight. The coat is always white.",
+            "labradoodle" : "The Labradoodle is a crossbreed dog created by crossing the Labrador Retriever and the Standard, Miniature, or Toy Poodle. The term first appeared in 1955, but was not popularized until 1988, when the mix began to be used as an allergen-free guide dog.",
+            "labrador" : "The Labrador Retriever, often abbreviated to Labrador, is a breed of retriever-gun dog from the United Kingdom that was developed from imported Canadian fishing dogs.",
+            "leonberg" : "The Leonberger is a giant dog breed. The breed's name derives from the city of Leonberg in Baden-Württemberg, Germany. According to legend, the Leonberger was ostensibly bred as a 'symbolic dog' that would mimic the lion in the town crest.",
+            "lhasa" : "The Lhasa Apso is a dog breed originating from Tibet. It is stubborn, confident, and affectionate toward its owner. This resilient dog has an exceptional sense of hearing and alerts its owner to approaching strangers in time. Its name comes from the sacred city of Lhasa.",
+            "malamute" : "The Alaskan Malamute is a large breed of domestic dog originally bred for their strength and endurance to haul heavy freight as sled dogs and hounds.",
+            "malinois" : "The Belgian Malinois is a breed of dog sometimes classified as a variety of the Belgian Shepherd Dog rather than as a separate breed. The Malinois is recognized by all major kennel clubs.",
+            "maltese" : "The Maltese is a breed of dog in the toy group. It is thought to have originated in south-central Europe from dogs of spitz type.",
+            "mastiff" : "The Mastiff is a large and powerful dog breed that is known for its gentle nature. The breed is believed to have originated in Asia, and is one of the oldest and largest dog breeds.",
+            "mexicanhairless" : "The Xoloitzcuintli, or Xolo for short, is a hairless breed of dog, found in toy, miniature, and standard sizes. The Xolo also comes in a coated variety and all three sizes can be born to a single litter. It is also known as the Mexican hairless dog in English-speaking countries.",
+            "mix" : "Mixed-breed dogs are dogs that have parents of different breeds. They can be of any size, shape, or color. Because mixed-breed dogs are a blend of two or more breeds, they can vary greatly in appearance and temperament.",
+            "mountain" : "The Bernese Mountain Dog is a large dog breed, one of the four breeds of Sennenhund-type dogs from the Swiss Alps. The name Sennenhund refers to people called Senn, herders in the Swiss Alps.",
+            "mudhol" : "The Mudhol Hound, also known as Caravan Hound, is an Indian breed of dog of the sight hound type. The feathered variety is commonly referred to as a Pashmi.",
+            "newfoundland" : "The Newfoundland is a large working dog. Newfoundland dogs can be black, brown, grey, or black and white. They were originally bred and used as working dogs for fishermen in Newfoundland.",
+            "otterhound" : "The Otterhound is an old British dog breed. It is a scent hound and has a very good sense of smell. The Otterhound is a large dog with a rough coat.",
+            "ovcharka" : "The Caucasian Shepherd Dog is a large herding dog native to the Caucasus region, primarily found in Georgia, as well as Armenia, Azerbaijan, and Dagestan",
+            "papillon" : "Papillon, also known as the Continental Toy Spaniel, is a spaniel-type dog breed. One of the oldest toy spaniels, this breed gets its name from the characteristic butterfly-like appearance of its long, fringed ears. A Papillon with dropped ears is called a Phalene",
+            "pekinese" : "The Pekingese, also known as the Lion Dog, Peking Lion Dog, Pelchie Dog, or Peke is an ancient breed of toy dog, originating in China. They are called Lion Dogs due to their resemblance to Chinese guardian lions.",
+            "pembroke" : "The Pembroke Welsh Corgi is a cattle herding dog breed that originated in Pembrokeshire, Wales. It is one of two breeds known as a Welsh Corgi. The other is the Cardigan Welsh Corgi, and both descend from the line of northern spitz-type dogs.",
+            "pinscher" : "The Miniature Pinscher, also known as the Zwergpinscher, and Min Pin, is a small breed of dog of the pinscher type originating from Germany.",
+            "pitbull" : "A pit bull is any of a group of breeds, like the American Staffordshire Terrier, Staffordshire Bull Terrier, American Pit Bull Terrier, and Bull Terrier. The American Pit Bull Terrier is a medium-sized, solidly built, short-coated dog with smooth, well-defined musculature.",
+            "pointer" : "The Pointer, sometimes called the English Pointer, is a medium to large-sized breed of dog developed in England as a gun dog. It is one of several pointing breeds.",
+            "pomeranian" : "The Pomeranian is a breed of dog of the Spitz type that is named for the Pomerania region in north-west Poland and north-east Germany in Central Europe. Classed as a toy dog breed because of its small size, the Pomeranian is descended from larger Spitz-type dogs, specifically the German Spitz.",
+            "poodle" : "The Poodle is a dog breed that comes in three varieties: Standard Poodle, Miniature Poodle, and Toy Poodle. The breed's origin is disputed: whether it descends from Germany as a type of water dog, or from the French Barbet.",
+            "pug" : "The Pug is a breed of dog with a wrinkly face and curled tail. The breed has a fine, glossy coat that comes in a variety of colors, most often fawn or black, and a compact square body with well-developed muscles.",
+            "puggle" : "The Puggle is a mixed-breed dog. The Puggle is a cross between a Beagle and a Pug. The Puggle was first bred in the 1980s and gained popularity in the United States due to its cute appearance and friendly nature.",
+            "pyrenees" : "The Great Pyrenees is a large breed of dog used as a livestock guardian dog. It should not be confused with the Pyrenean Mastiff.",
+            "redbone" : "The Redbone Coonhound is an American breed of dog used for hunting raccoon, deer, bear, and cougar. The American Kennel Club (AKC) breed standard indicates that it may be red, though the coat may have some white.",
+            "retriever" : "A retriever is a type of gun dog that retrieves game for a hunter. Retrievers were bred primarily to retrieve birds or other prey and return them to the hunter without damage.",
+            "ridgeback" : "The Ridgeback is a large dog breed originally bred in South Africa. The original breed standard was developed by F.R. Barnes in 1922 in Bulawayo, South Rhodesia, and it was officially recognized by the South African Kennel Union in 1927.",
+            "rottweiler" : "The Rottweiler is a guard and protection dog breed originating from Germany. It takes its name from the town of Rottweil in Germany.",
+            "saluki" : "The Saluki, also known as the Persian Greyhound, is a dog breed that was historically bred in the Fertile Crescent. The Saluki is a sighthound and is typically deep-chested and long-legged.",
+            "samoyed" : "The Samoyed is a breed of large herding dog that descended from the Nenets herding laika, a spitz-type dog, with a thick, white, double-layer coat.",
+            "schipperke" : "The Schipperke is a small Belgian breed of dog that originated in the early 16th century. There has been a long informal debate over whether this type of dog is a spitz or miniature sheepdog.",
+            "schnauzer" : "A Schnauzer is a dog breed type that originated in Germany from at least 14th to 15th centuries. The term comes from the German word for 'snout' and means colloquially 'moustache', or 'whiskered snout', because of the dog's distinctively bearded snout.",
+            "segugio" : "The Segugio Italiano is an Italian breed of dog of the scenthound family. It comes in both smooth and rough coats and is used to hunt boar and other large game.",
+            "setter" : "The Setter is a type of gundog used most often for hunting game such as quail, pheasant, and grouse. In the UK, the four setter breeds together form a sub-group of the gundog group.",
+            "sharpei" : "The Chinese Shar-Pei is a breed of dog known for its distinctive features of deep wrinkles and a blue-black tongue. The breed originates from southern China.",
+            "sheepdog" : "A sheep dog or sheepdog is generally a dog or breed of dogs historically used in connection with the raising of sheep.",
+            "shiba" : "The Shiba Inu is a breed of hunting dog from Japan. A small-to-medium breed, it is the smallest of the six original and distinct spitz breeds of dog native to Japan.",
+            "shihtzu" : "A Shih Tzu, also known as the Chrysanthemum Dog, is a toy dog breed originating from Tibet. This breed is known for its long, flowing double coat, which is often styled to perfection.",
+            "springer" : "The English Springer Spaniel is a breed of gun dog in the Spaniel family traditionally used for flushing and retrieving game. It is an affectionate, excitable breed with a typical lifespan of twelve to fourteen years.",
+            "stbernard" : "The St. Bernard or St Bernard is a breed of very large working dog from the western Alps in Italy and Switzerland. They were originally bred for rescue by the hospice of the Great St Bernard Pass on the Italian-Swiss border.",
+            "terrier " : "A terrier is a dog of any one of many breeds or landraces of the terrier type, which are typically small, wiry, game, and fearless. Terrier breeds vary greatly in size from just a couple of pounds to over 70 pounds.",
+            "tervuren" : "The Belgian Tervuren is a breed of dog, sometimes classified as a variety of the Belgian Shepherd Dog rather than as a separate breed. The Tervuren is recognized by all major kennel clubs.",
+            "vizsla" : "The Vizsla is a dog breed originating in Hungary. The Hungarian or Magyar Vizsla are sporting dogs and loyal companions, in addition to being the smallest of the all-round pointer-retriever breeds.",
+            "weimaraner" : "The Weimaraner is a large dog that was originally bred for hunting in the early 19th century. Early Weimaraners were used by royalty for hunting large game such as boar, bear, and deer.",
+            "whippet" : "The Whippet is a dog breed of medium size. They are a sighthound breed that originated in England, where they descended from greyhounds. Whippets today still strongly resemble a smaller greyhound.",
+            "wolfhound" : "The Irish Wolfhound is a breed of domestic dog, specifically a sighthound. The name originates from its purpose (wolf hunting with dogs) rather than from its appearance.",
+        };
+
+        async function fetchURL(myurl) {
+            const response = await fetch(myurl);
+            return response.json();
+        }
+
+        async function getDogBreeds() {
+            let myurl = "https://dog.ceo/api/breeds/list/all";
+            let result = await fetchURL(myurl);
+            let breeds = result["message"];
+            let breedSelect = document.getElementById("breeds");
+
+            // Cinsleri select elementine ekle
+            for (let breed in breeds) {
+                breedSelect.innerHTML += `<option value="${breed}">${breed}</option>`;
+            }
+        }
+
+        async function getDogImage() {
+            let breedName = document.getElementById("breeds").value; // Seçilen cins
+            if (breedName === "") {
+                document.getElementById("breedInfo").innerHTML = "If you want to change your photo, choose a dog breed first!";
+                return; // Seçim yapılmadıysa fotoğraf gösterme
+            }
+
+            let myurl = `https://dog.ceo/api/breed/${breedName}/images/random`;
+            let result = await fetchURL(myurl);
+            if (result['message']) {
+                document.getElementById("output").innerHTML = `<img src='${result['message']}' alt='dog'>`;
+
+                // Cins hakkında bilgiyi ekle
+                let breedDescription = breedInfo[breedName.toLowerCase()];
+                if (breedDescription) {
+                    document.getElementById("breedInfo").innerHTML = breedDescription;
+                } else {
+                    document.getElementById("breedInfo").innerHTML = "No information available about this breed";
+                }
+            } else {
+                document.getElementById("output").innerHTML = "No photos found for this breed!";
+                document.getElementById("breedInfo").innerHTML = "";
+            }
+        }
+
+        getDogBreeds();
+    </script>
+</body>
+
+</html>
